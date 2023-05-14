@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\InventoryResource;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -22,7 +23,9 @@ class InventoryApiController extends Controller
             $query->orderBy('name', $sortType);
         })->paginate(7)->withQueryString();
 
-        return response()->json($inventories);
+        // return response()->json($inventories);
+        return InventoryResource::collection($inventories);
+
     }
 
     /**
@@ -68,7 +71,8 @@ class InventoryApiController extends Controller
             return response()->json(['message' => 'Item Not Found!'], 404);
         }
 
-        return response()->json($inventory);
+        // return response()->json($inventory);
+        return new InventoryResource($inventory);
     }
 
     /**
