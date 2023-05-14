@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
@@ -16,11 +19,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get("/", [PageController::class, "index"])->name("page.index");
-Route::get('/inventory', [ItemController::class, "index"])->name("inventory.index");
-Route::post('/inventory', [ItemController::class, 'store'])->name('inventory.store');
-Route::get("/inventory/create", [ItemController::class, "create"])->name("inventory.create");
-Route::get("/inventory/{id}", [ItemController::class, "show"])->name("inventory.show");
-Route::delete("/inventory/{id}", [ItemController::class, "destroy"])->name("inventory.destroy");
 
-Route::get("/inventory/{id}/edit", [ItemController::class, "edit"])->name("inventory.edit");
-Route::put("/inventory/{id}", [ItemController::class, "update"])->name("inventory.update");
+
+
+// Route::prefix("inventory")->controller(ItemController::class)->group(function() {
+//     Route::get('/',"index")->name("inventory.index");
+//     Route::post('/','store')->name('inventory.store');
+//     Route::get("/create","create")->name("inventory.create");
+//     Route::get("/{id}","show")->name("inventory.show");
+//     Route::delete("/{id}","destroy")->name("inventory.destroy");
+//     Route::get("/{id}/edit","edit")->name("inventory.edit");
+//     Route::put("/{id}","update")->name("inventory.update");
+// });
+
+// Route::resource('inventory', ItemController::class);
+
+Route::resource("inventory", InventoryController::class);
+Route::resource('category', CategoryController::class);
+
+Route::resource("book", BookController::class);
