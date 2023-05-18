@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Validator;
 
 class InventoryApiController extends Controller
 {
+
+    public function __construct()
+    {
+        // $this->middleware('cat')->only('store', 'delete', 'index', 'show');
+        $this->middleware('cat')->except('index');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -57,7 +64,9 @@ class InventoryApiController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
         ]);
-        return response()->json($inventory);
+        // return response()->json($inventory);
+        return new InventoryResource($inventory);
+
     }
 
     /**
@@ -100,7 +109,9 @@ class InventoryApiController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
         ]);
-        return response()->json($inventory);
+        // return response()->json($inventory);
+        return new InventoryResource($inventory);
+
     }
 
     /**

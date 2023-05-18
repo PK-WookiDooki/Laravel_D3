@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookApiController;
 use App\Http\Controllers\InventoryApiController;
+// use App\Http\Middleware\CheckApiToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

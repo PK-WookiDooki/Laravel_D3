@@ -36,5 +36,4 @@ Route::get("/", [PageController::class, "index"])->name("page.index");
 
 Route::resource("inventory", InventoryController::class);
 Route::resource('category', CategoryController::class);
-
 Route::resource("book", BookController::class);
