@@ -6,7 +6,7 @@
 
 @section('contents')
     {{-- route helper --}}
-    <div class=" alert alert-info">{{ route('inventory.show', [12, 'aaa' => 'triple a']) }}</div>
+    {{-- <div class=" alert alert-info">{{ route('inventory.show', [12, 'aaa' => 'triple a']) }}</div> --}}
     <div class="group tracking-wide">
         <h1 class="text-xl font-bold text-red-700 mb-[15px]">Meet Laravel</h1>
         <div class="text-gray-500 group-hover:text-black duration-100 ">

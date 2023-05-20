@@ -21,6 +21,10 @@
                 @include('layouts.sidebar')
             </div>
             <div class="w-full shadow p-3 hover:shadow-lg duration-200">
+                @verifying
+                    @include('layouts.email_verify_noti')
+                @endverifying
+
                 @yield('contents')
             </div>
         </div>

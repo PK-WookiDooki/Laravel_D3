@@ -1,10 +1,16 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PageController;
+use App\Http\Middleware\IsAuthenticated;
+use App\Http\Middleware\IsNotAuthenticated;
+use App\Http\Middleware\IsNotVerified;
+use App\Http\Middleware\IsVerified;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +40,40 @@ Route::get("/", [PageController::class, "index"])->name("page.index");
 
 // Route::resource('inventory', ItemController::class);
 
-Route::resource("inventory", InventoryController::class);
-Route::resource('category', CategoryController::class);
-Route::resource("book", BookController::class);
+Route::middleware(IsAuthenticated::class)->group(function () {
+    Route::resource("inventory", InventoryController::class);
+    Route::resource('category', CategoryController::class);
+    Route::resource("book", BookController::class);
+
+    Route::controller(HomeController::class)->prefix("dashboard")->group(function () {
+        Route::get('home', "home")->name("dashboard.home");
+    });
+});
+
+Route::controller(AuthController::class)->group(function () {
+    Route::middleware(IsNotAuthenticated::class)->group(function () {
+        Route::get("register", "register")->name("auth.register");
+        Route::post("register", "store")->name('auth.store');
+        Route::get('login', "login")->name("auth.login");
+        Route::post("login", 'check')->name("auth.check");
+        Route::get('forget', "forgotPassword")->name('auth.forgotPassword');
+        Route::post('check_email', "checkEmail")->name('auth.checkEmail');
+        Route::get('new_password', "newPassword")->name('auth.newPassword');
+        Route::post('reset_password', 'resetPassword')->name('auth.resetPassword');
+    });
+
+    Route::middleware(IsAuthenticated::class)->group(function () {
+        Route::post("logout", "logout")->name("auth.logout");
+
+        Route::middleware(IsNotVerified::class)->group(function () {
+            Route::get('change_password', 'changePassword')->name('auth.changePassword');
+            Route::post('change_password', 'changingPassword')->name('auth.changingPassword');
+        });
+
+
+        Route::middleware(IsVerified::class)->group(function () {
+            Route::get('verify_code', 'verifyCode')->name('auth.verifyCode');
+            Route::post('verify_code', 'verifyingCode')->name('auth.verifyingCode');
+        });
+    });
+});
